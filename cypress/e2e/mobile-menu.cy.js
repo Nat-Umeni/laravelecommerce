@@ -9,28 +9,29 @@ function closeByEsc() {
 }
 
 function closeByBackdrop() {
-    cy.get('[data-testid="mobile-drawer"]').then(($overlay) => {
-        const panel = $overlay.find('div[role="dialog"]')[0];
-        const w = panel.getBoundingClientRect().width;
-        cy.wrap($overlay).click(w + 10, 10);
-    });
+    cy.get('[data-testid="mobile-backdrop"]')
+        .click("topRight", { force: true });
     cy.get('[data-testid="mobile-drawer"]').should("not.be.visible");
 }
 
-describe("Mobile menu", () => {
-    beforeEach(() => {
-        cy.viewport("iphone-6");
-        cy.visit("/");
-        cy.get('[data-testid="mobile-drawer"]').should("not.be.visible");
-    });
-    
-    it("closes with ESC", () => {
-        openMobileMenu();
-        closeByEsc();
-    });
+beforeEach(() => {
+    cy.viewport("iphone-6");
+    cy.visit("/");
+    cy.get('[data-testid="mobile-drawer"]').should("not.be.visible");
+});
 
-    it("closes with backdrop click", () => {
-        openMobileMenu();
-        closeByBackdrop();
-    });
+it('doesnt close if you click the mobile panel itself', () => {
+    openMobileMenu();
+    cy.get('[data-testid="mobile-drawer"]').click();
+    cy.get('[data-testid="mobile-drawer"]').should("be.visible");    
+});
+
+it("closes with ESC", () => {
+    openMobileMenu();
+    closeByEsc();
+});
+
+it("closes with backdrop click", () => {
+    openMobileMenu();
+    closeByBackdrop();
 });
