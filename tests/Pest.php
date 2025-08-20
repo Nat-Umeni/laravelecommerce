@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\DomCrawler\Crawler;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -12,7 +14,7 @@
 */
 
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -26,8 +28,49 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toContainTextInTestId', function (string $containerTestId, string|array $expected) {
+    $response = $this->value; // should be a TestResponse
+    $crawler = new Crawler($response->getContent());
+
+    $container = $crawler->filter("[data-testid='{$containerTestId}']");
+    expect($container->count())->toBeGreaterThan(0, "Element [data-testid='{$containerTestId}'] not found.");
+
+    $normalized = trim(preg_replace('/\s+/', ' ', $container->text()));
+
+    foreach ((array) $expected as $needle) {
+        // no custom message arg here — just assert
+        expect($normalized)->toContain($needle);
+    }
+
+    return $this;
+});
+
+expect()->extend('toNotContainTextInTestId', function (string $containerTestId, string|array $unexpected) {
+    $html = $this->value->getContent(); // TestResponse expected
+    $crawler = new Crawler($html);
+
+    // NOTE: data-testid (not data-test)
+    $container = $crawler->filter("[data-testid='{$containerTestId}']");
+    if ($container->count() === 0) {
+        // Keep your original semantics: missing container = pass
+        return $this;
+    }
+
+    $normalized = trim(preg_replace('/\s+/', ' ', $container->text()));
+
+    foreach ((array) $unexpected as $needle) {
+        expect($normalized)->not->toContain($needle);
+    }
+
+    return $this;
+});
+
+
+expect()->extend('guestToBeRedirectedTo', function (string $route) {
+    Auth::logout();
+    expect($this->value->isRedirect())->toBeTrue();
+    expect($this->value->getTargetUrl())->toBe(route($route));
+    return $this;
 });
 
 /*

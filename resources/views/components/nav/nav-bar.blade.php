@@ -17,7 +17,7 @@
                     <!-- Simple links (desktop) -->
                     <div class="hidden h-full lg:flex">
                         <div class="inset-x-0 bottom-0 px-4">
-                            <div class="flex h-full justify-center space-x-8">
+                            <div class="flex h-full justify-center space-x-8" data-testid="desktop-nav-links">
                                 <a href="#" class="flex items-center text-sm font-medium text-white">All</a>
                                 <a href="#" class="flex items-center text-sm font-medium text-white">Women</a>
                                 <a href="#" class="flex items-center text-sm font-medium text-white">Men</a>

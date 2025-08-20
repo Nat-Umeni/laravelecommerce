@@ -5,8 +5,8 @@ it('successfully loads the home page', function () {
 });
 
 it('show category links in the header', function () {
-    $this->get('/')->assertSeeInOrder([
-        'All', 
+    expect($this->get('/'))->toContainTextInTestId('desktop-nav-links', [
+        'All',
         'Women',
         'Men'
     ]);
