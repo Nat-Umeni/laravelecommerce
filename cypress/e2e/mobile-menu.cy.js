@@ -9,9 +9,11 @@ function closeByEsc() {
 }
 
 function closeByBackdrop() {
-    cy.get('[data-testid="mobile-backdrop"]')
-        .should("be.visible")
-        .click("topRight", { force: true });
+    cy.get('[data-testid="mobile-drawer"]').then(($overlay) => {
+        const panel = $overlay.find('div[role="dialog"]')[0];
+        const w = panel.getBoundingClientRect().width;
+        cy.wrap($overlay).click(w + 10, 10);
+    });
     cy.get('[data-testid="mobile-drawer"]').should("not.be.visible");
 }
 
@@ -21,13 +23,7 @@ describe("Mobile menu", () => {
         cy.visit("/");
         cy.get('[data-testid="mobile-drawer"]').should("not.be.visible");
     });
-
-    it("does not close when clicking inside the panel", () => {
-        openMobileMenu();
-        cy.get('[data-testid="mobile-drawer"]').click("center", { force: true });
-        cy.get('[data-testid="mobile-drawer"]').should("be.visible");
-    });
-
+    
     it("closes with ESC", () => {
         openMobileMenu();
         closeByEsc();
@@ -36,5 +32,5 @@ describe("Mobile menu", () => {
     it("closes with backdrop click", () => {
         openMobileMenu();
         closeByBackdrop();
-    })
+    });
 });

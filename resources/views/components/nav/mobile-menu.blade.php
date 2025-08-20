@@ -7,7 +7,7 @@
         @click="open=false"></div>
 
     <!-- Slide-over -->
-    <div x-cloak data-testid="mobile-drawer" x-show="open" class="fixed inset-0 z-50 flex lg:hidden">
+    <div x-cloak data-testid="mobile-drawer" @click.self="open=false" x-show="open" class="fixed inset-0 z-50 flex lg:hidden" >
         <div class="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl"
             role="dialog" aria-modal="true" tabindex="-1"
             x-transition:enter="transform transition ease-in-out duration-300"
