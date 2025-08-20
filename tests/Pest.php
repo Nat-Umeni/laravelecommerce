@@ -29,7 +29,7 @@ pest()->extend(Tests\TestCase::class)
 */
 
 expect()->extend('toContainTextInTestId', function (string $containerTestId, string|array $expected) {
-    $response = $this->value; // should be a TestResponse
+    $response = $this->value;
     $crawler = new Crawler($response->getContent());
 
     $container = $crawler->filter("[data-testid='{$containerTestId}']");
@@ -38,7 +38,6 @@ expect()->extend('toContainTextInTestId', function (string $containerTestId, str
     $normalized = trim(preg_replace('/\s+/', ' ', $container->text()));
 
     foreach ((array) $expected as $needle) {
-        // no custom message arg here — just assert
         expect($normalized)->toContain($needle);
     }
 
@@ -46,15 +45,11 @@ expect()->extend('toContainTextInTestId', function (string $containerTestId, str
 });
 
 expect()->extend('toNotContainTextInTestId', function (string $containerTestId, string|array $unexpected) {
-    $html = $this->value->getContent(); // TestResponse expected
+    $html = $this->value->getContent();
     $crawler = new Crawler($html);
 
-    // NOTE: data-testid (not data-test)
     $container = $crawler->filter("[data-testid='{$containerTestId}']");
-    if ($container->count() === 0) {
-        // Keep your original semantics: missing container = pass
-        return $this;
-    }
+    expect($container->count())->toBeGreaterThan(0, "Element [data-testid='{$containerTestId}'] not found.");
 
     $normalized = trim(preg_replace('/\s+/', ' ', $container->text()));
 
