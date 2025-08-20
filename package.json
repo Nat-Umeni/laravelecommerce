@@ -4,7 +4,11 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "test:pest": "php artisan test",
+        "cypress:run": "cypress run",
+        "test:all": "npm run test:pest && npm run cypress:run",
+        "test:e2e": "cypress run"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
