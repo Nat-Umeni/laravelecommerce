@@ -3,7 +3,7 @@
 <div x-data="{ open: @js($open), tab: 'women' }" x-on:keydown.escape.window="open = false" x-on:open-mobile-menu.window="open = true"
     x-on:close-mobile-menu.window="open = false">
     <!-- Backdrop -->
-    <div x-cloak x-show="open" x-transition.opacity class="fixed inset-0 z-40 bg-black/25 lg:hidden" aria-hidden="true"
+    <div x-cloak x-show="open" x-transition.opacity class="fixed inset-0 z-40 bg-black/25 lg:hidden" data-testid="mobile-backdrop" aria-hidden="true"
         @click="open=false"></div>
 
     <!-- Slide-over -->
@@ -14,9 +14,10 @@
             x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
             x-transition:leave="transform transition ease-in-out duration-300" x-transition:leave-start="translate-x-0"
             x-transition:leave-end="-translate-x-full">
+
             <!-- Close -->
             <div class="flex px-4 pt-5 pb-2">
-                <button type="button" @click="open=false"
+                <button id="mobile-menu-close" type="button" @click="open=false"
                     class="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400">
                     <span class="sr-only">Close menu</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-6"
