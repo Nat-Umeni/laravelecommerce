@@ -15,9 +15,14 @@
             <h1 class="text-4xl font-bold tracking-tight text-white lg:text-6xl">New arrivals are here</h1>
             <p class="mt-4 text-xl text-white">The new arrivals have, well, newly arrived. Check out the latest options
                 from our summer small-batch release while they're still in stock.</p>
-            <a href="#"
+            <a href="#most-recent"
                 class="mt-8 inline-block rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-gray-900 hover:bg-gray-100">Shop
                 New Arrivals</a>
         </div>
     </div>
+
+    <div id="most-recent">
+        <x-product.list />
+    </div>
+
 </x-layout>
